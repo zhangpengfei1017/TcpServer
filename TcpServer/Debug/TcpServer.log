@@ -1,0 +1,17 @@
+﻿  Time.cpp
+  Room.cpp
+c:\users\xiaobei\documents\visual studio 2015\projects\tcpserver\tcpserver\room.cpp(24): warning C4018: '<': signed/unsigned mismatch
+  Player.cpp
+  Monster.cpp
+  main.cpp
+c:\users\xiaobei\documents\visual studio 2015\projects\tcpserver\tcpserver\main.cpp(303): warning C4018: '<': signed/unsigned mismatch
+c:\users\xiaobei\documents\visual studio 2015\projects\tcpserver\tcpserver\main.cpp(322): warning C4018: '<': signed/unsigned mismatch
+c:\users\xiaobei\documents\visual studio 2015\projects\tcpserver\tcpserver\main.cpp(331): warning C4018: '<': signed/unsigned mismatch
+c:\users\xiaobei\documents\visual studio 2015\projects\tcpserver\tcpserver\main.cpp(388): warning C4101: 'BufSend': unreferenced local variable
+c:\users\xiaobei\documents\visual studio 2015\projects\tcpserver\tcpserver\main.cpp(534): warning C4018: '<': signed/unsigned mismatch
+c:\users\xiaobei\documents\visual studio 2015\projects\tcpserver\tcpserver\main.cpp(470): warning C4101: 'buf': unreferenced local variable
+c:\users\xiaobei\documents\visual studio 2015\projects\tcpserver\tcpserver\main.cpp(471): warning C4101: 'sendBuf': unreferenced local variable
+  Dungeon.cpp
+  Generating Code...
+  TcpServer.vcxproj -> C:\Users\xiaobei\documents\visual studio 2015\Projects\TcpServer\Debug\TcpServer.exe
+  TcpServer.vcxproj -> C:\Users\xiaobei\documents\visual studio 2015\Projects\TcpServer\Debug\TcpServer.pdb (Partial PDB)
