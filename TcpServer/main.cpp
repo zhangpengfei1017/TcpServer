@@ -1,6 +1,6 @@
 
 #include "Header.h"
-
+#include "GamePlay.h"
 std::vector<Room*> AllRooms;//所有房间
 std::vector<Player*> PlayersInHall;//在大厅中的玩家
 std::vector<Player*> AllPlayers;
@@ -22,7 +22,13 @@ struct PlayerInfo_C08 {
 	int posy;
 	int posz;
 };
-
+struct PlayerAttack_C09 {
+	int posx;
+	int posy;
+	int posz;
+	int skill;
+	int direction;
+};
 
 
 //
@@ -70,6 +76,7 @@ struct GameStartMonsterInfo_S06 {
 };
 struct GameInfoHead_S08 {
 	int playernum;
+	int monsternum;
 };
 struct GamePlayerInfo_S08 {
 	int UID;
@@ -88,8 +95,6 @@ struct GameMonsterInfo_S08 {
 	int posz;
 	int maxhp;
 	int curhp;
-	int maxmp;
-	int curmp;
 };
 
 void ReceiveMsg(char buf[]) {
@@ -158,6 +163,18 @@ void ReceiveMsg(char buf[]) {
 		p->curPosX = pi.posx;
 		p->curPosY = pi.posy;
 		p->curPosZ = pi.posz;
+		break;
+	}
+	case 9: {//player attack
+		Room* r = FindRoom(FindInAll(hp.UID)->CurRoom);
+		PlayerAttack_C09 pa;
+		memset(&pa, 0, sizeof(pa));
+		memcpy(&pa, buf + BufPos, sizeof(pa));
+		BufPos += sizeof(pa);
+		if (GamePlay::Attack(0, pa.posx, pa.posy, pa.posz, pa.direction, pa.skill, r) >= 0) {
+			//return the player focus info
+		}
+		break;
 	}
 	default:
 		break;
@@ -248,7 +265,9 @@ void SendMsg(Player* p, int cmdId, int MsgNum, char MsgChar[]) {
 	}
 	case 8: {//game info ever frame;
 		GameInfoHead_S08 gih;
-		gih.playernum = FindRoom(MsgNum)->PlayerNum;
+		Room* r = FindRoom(MsgNum);
+		gih.playernum = r->PlayerNum;
+		gih.monsternum = r->mDungeon->Monsters[r->mDungeon->curDungeon].size();
 		memcpy(BufSend + BufPos, &gih, sizeof(gih));//装进数据包
 		BufPos += sizeof(gih);
 		for (int i = 0; i < gih.playernum; i++) {
@@ -260,6 +279,19 @@ void SendMsg(Player* p, int cmdId, int MsgNum, char MsgChar[]) {
 			gpi.posz = p->curPosZ;
 			memcpy(BufSend + BufPos, &gpi, sizeof(gpi));//装进数据包
 			BufPos += sizeof(gpi);
+		}
+		
+		for (int i = 0; i <gih.monsternum; i++) {
+			Monster* m = r->mDungeon->Monsters[r->mDungeon->curDungeon][i];
+			GameMonsterInfo_S08 gmi;
+			gmi.ID = m->MonID;
+			gmi.maxhp = m->maxHp;
+			gmi.curhp = m->curHp;
+			gmi.posx = m->PosX;
+			gmi.posy = m->PosY;
+			gmi.posz = m->PosZ;
+			memcpy(BufSend + BufPos, &gmi, sizeof(gmi));//装进数据包
+			BufPos += sizeof(gmi);
 		}
 		break;
 	}

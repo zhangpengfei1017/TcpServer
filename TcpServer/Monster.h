@@ -14,5 +14,8 @@ public:
 	int maxHp;
 	int curHp;
 	int attack;
+	//
+
+	void takeattack(int damage);
 };
 
